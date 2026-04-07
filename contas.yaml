@@ -9,3 +9,6 @@
 clientes:
 
   # -- Teus clientes abaixo --
+  - nome: Pietro Embalagens
+    property_id: "307723925"
+    site: "pietroembalagens.com.br"
