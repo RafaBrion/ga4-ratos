@@ -36,6 +36,8 @@ def cmd_properties(args):
         _load_env_file()
 
         # Tenta inicializar admin client com as mesmas credenciais
+        from lib import _build_oauth_credentials, _load_google_ads_env
+
         creds_path = os.environ.get("GA4_CREDENTIALS_PATH")
         if creds_path and os.path.isfile(creds_path):
             from google.oauth2 import service_account
@@ -44,8 +46,24 @@ def cmd_properties(args):
                 scopes=["https://www.googleapis.com/auth/analytics.readonly"],
             )
             admin_client = AnalyticsAdminServiceClient(credentials=credentials)
+        elif os.environ.get("GA4_CLIENT_ID") and os.environ.get("GA4_REFRESH_TOKEN"):
+            credentials = _build_oauth_credentials(
+                os.environ["GA4_CLIENT_ID"],
+                os.environ["GA4_CLIENT_SECRET"],
+                os.environ["GA4_REFRESH_TOKEN"],
+            )
+            admin_client = AnalyticsAdminServiceClient(credentials=credentials)
         else:
-            admin_client = AnalyticsAdminServiceClient()
+            _load_google_ads_env()
+            if os.environ.get("GOOGLE_ADS_CLIENT_ID") and os.environ.get("GOOGLE_ADS_REFRESH_TOKEN"):
+                credentials = _build_oauth_credentials(
+                    os.environ["GOOGLE_ADS_CLIENT_ID"],
+                    os.environ["GOOGLE_ADS_CLIENT_SECRET"],
+                    os.environ["GOOGLE_ADS_REFRESH_TOKEN"],
+                )
+                admin_client = AnalyticsAdminServiceClient(credentials=credentials)
+            else:
+                admin_client = AnalyticsAdminServiceClient()
 
         accounts = []
         for account in admin_client.list_account_summaries():
