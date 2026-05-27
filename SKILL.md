@@ -15,7 +15,7 @@ Skill completa para consulta de dados do Google Analytics 4 via SDK oficial (`go
 
 ## Setup (primeira vez)
 
-Quando o usuario pedir para configurar, rodar setup, ou for a primeira vez usando a skill, o Claude deve guiar o setup interativo:
+Quando o usuario pedir para configurar, rodar setup, ou for a primeira vez usando a skill, o Codex deve guiar o setup interativo:
 
 ### 1. Verificar dependencias
 
@@ -25,7 +25,7 @@ pip3 install google-analytics-data google-auth
 
 ### 2. Verificar .env
 
-Checar se existe `~/.claude/skills/ga4-ratos/.env`. Se NAO existir, criar com o template:
+Checar se existe `~/.Codex/skills/ga4-ratos/.env`. Se NAO existir, criar com o template:
 
 ```
 # GA4 Ratos — Configuracao
@@ -51,11 +51,11 @@ GA4_CREDENTIALS_PATH=""
 
 **Modo 1 (Service Account):** Mais simples. Cria uma service account no Google Cloud Console, da acesso de leitura na propriedade GA4, baixa o JSON e coloca o path em `GA4_CREDENTIALS_PATH`.
 
-**Modo 2 (OAuth2):** Se o usuario ja tem `google-ads-ratos` configurado com OAuth, os scripts buscam automaticamente as credenciais de `~/.claude/skills/google-ads-ratos/.env`. Nao precisa configurar nada extra.
+**Modo 2 (OAuth2):** Se o usuario ja tem `google-ads-ratos` configurado com OAuth, os scripts buscam automaticamente as credenciais de `~/.Codex/skills/google-ads-ratos/.env`. Nao precisa configurar nada extra.
 
 ### 3. Cadastro de propriedades (contas.yaml) — SETUP CONVERSACIONAL
 
-Depois que o `.env` estiver preenchido, o Claude DEVE proativamente guiar o cadastro:
+Depois que o `.env` estiver preenchido, o Codex DEVE proativamente guiar o cadastro:
 
 1. Rodar `read.py account` para verificar acesso a propriedade
 2. Perguntar ao usuario: "Qual o site/app principal? Me passa o nome do cliente, e eu preencho o contas.yaml pra ti."
@@ -67,9 +67,9 @@ Depois que o `.env` estiver preenchido, o Claude DEVE proativamente guiar o cada
 
 ## Cadastro de clientes (contas.yaml)
 
-**Arquivo:** `~/.claude/skills/ga4-ratos/contas.yaml`
+**Arquivo:** `~/.Codex/skills/ga4-ratos/contas.yaml`
 
-Antes de executar qualquer operacao, o Claude DEVE ler este arquivo para resolver nomes de clientes para property IDs.
+Antes de executar qualquer operacao, o Codex DEVE ler este arquivo para resolver nomes de clientes para property IDs.
 Quando o usuario disser "analytics do Meu Cliente" ou "sessoes da Meu Cliente", consultar o contas.yaml
 para obter o property_id do cliente.
 
@@ -77,13 +77,13 @@ Se o cliente nao estiver cadastrado, perguntar os dados e oferecer para adiciona
 
 ## Como usar
 
-Todos os scripts estao em `~/.claude/skills/ga4-ratos/scripts/`. O padrao e:
+Todos os scripts estao em `~/.Codex/skills/ga4-ratos/scripts/`. O padrao e:
 
 ```
 python3 <script>.py <subcomando> [argumentos]
 ```
 
-O Claude deve interpretar o pedido do usuario e executar o script correto via Bash.
+O Codex deve interpretar o pedido do usuario e executar o script correto via Bash.
 
 ---
 
@@ -131,7 +131,7 @@ Parametros comuns:
 
 ## Regras de seguranca
 
-O Claude DEVE seguir estas regras ao executar operacoes:
+O Codex DEVE seguir estas regras ao executar operacoes:
 
 1. **Somente leitura** — GA4 Ratos e uma skill de consulta, NAO modifica dados
 2. **Nunca hardcodar property IDs ou credenciais** — sempre usar env vars ou contas.yaml
